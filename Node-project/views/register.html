@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>注册页面</title>
+    <style>
+        .msg{color: #ff160e;}
+        .asd{color: #0bc52a;}
+    </style>
+</head>
+
+<body>
+        <h1>注册页面</h1>
+        <div><span>账号：</span><input type="text" name="user"></div>
+        <div><span>密码：</span><input type="password" name="pwd1"></div>
+        <div><span>密码：</span><input type="password" name="pwd2"></div>
+        <div><input type="submit" value="注册" id="btn"><button>登录</button><span class="msg"></span><span class="asd"></span></div>
+</body>
+
+</html>
+<script>
+    $(function () { 
+        $('#btn').click(function () {
+            var user = $('input[type=text]')
+            var pwd1 = $('input[name=pwd1]')
+            var pwd2 = $('input[name=pwd2]')
+            var msg=$('.msg')
+            var datas = { user: user.val(), pwd: pwd1.val() }
+
+            if (user.val().length == 0 || pwd1.val().length == 0 || pwd2.val().length == 0) {
+                msg.text('请输入用户名和密码')
+                return false
+            } else if (pwd1.val() !== pwd2.val()) {
+                msg.text('两次密码输入不一致')
+                return false
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/regs',
+                    dataType: 'json',
+                    data: datas,
+                    success: function (data) {
+                        if(data.code>0){
+                            $(".asd").text(data.msg)
+                        }
+                            $(".asd").text(data.msg)
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    }
+                })
+            }
+        })
+        $('button').click(function(){
+            location.href='/'
+        })
+    })
+</script>
